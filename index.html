@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DigitalFlo AI Agent Demo Platform</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            line-height: 1.6;
+            color: #1E293B;
+            background: #F8FAFC;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        header {
+            background: #FFFFFF;
+            padding: 16px 0;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 24px;
+            font-weight: 700;
+            color: #3B82F6;
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: #3B82F6;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            margin-right: 12px;
+            font-weight: bold;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 32px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #64748B;
+            font-weight: 500;
+            transition: color 200ms;
+        }
+
+        nav a:hover {
+            color: #3B82F6;
+        }
+
+        .hero {
+            padding: 80px 0;
+            background: linear-gradient(135deg, #F8FAFC 0%, #E2E8F0 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 48px;
+            align-items: center;
+        }
+
+        .hero-text h1 {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 24px;
+            line-height: 1.1;
+        }
+
+        .hero-text h1 .highlight {
+            background: linear-gradient(135deg, #60A5FA, #3B82F6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-text p {
+            font-size: 18px;
+            color: #64748B;
+            margin-bottom: 32px;
+            font-weight: 400;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-bottom: 48px;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            transition: transform 200ms, box-shadow 200ms;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, #60A5FA, #3B82F6);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 16px;
+        }
+
+        .feature-card h3 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .feature-card p {
+            color: #64748B;
+            font-size: 14px;
+        }
+
+        .feature-list {
+            list-style: none;
+            margin-bottom: 32px;
+        }
+
+        .feature-list li {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+            color: #64748B;
+        }
+
+        .feature-list li::before {
+            content: "✓";
+            color: #10B981;
+            font-weight: bold;
+            margin-right: 12px;
+        }
+
+        .form-container {
+            background: white;
+            padding: 32px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .form-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .sparkle-icon {
+            color: #F59E0B;
+        }
+
+        .form-subtitle {
+            color: #64748B;
+            font-size: 16px;
+            margin-bottom: 16px;
+        }
+
+        .form-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #DBEAFE, #BFDBFE);
+            color: #1E40AF;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 500;
+            color: #374151;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #E2E8F0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 200ms;
+            background: #FFFFFF;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #3B82F6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .form-input.error {
+            border-color: #EF4444;
+            background: #FEF2F2;
+        }
+
+        .error-message {
+            color: #EF4444;
+            font-size: 14px;
+            margin-top: 4px;
+            display: none;
+        }
+
+        .form-input.error + .error-message {
+            display: block;
+        }
+
+        .submit-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #3B82F6, #1D4ED8);
+            color: white;
+            border: none;
+            padding: 16px 24px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 200ms;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .submit-btn:hover:not(:disabled) {
+            background: linear-gradient(135deg, #2563EB, #1D4ED8);
+            transform: scale(1.02);
+        }
+
+        .submit-btn:active:not(:disabled) {
+            background: linear-gradient(135deg, #1D4ED8, #1E40AF);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-text {
+            transition: opacity 200ms;
+        }
+
+        .loading-spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s linear infinite;
+            display: none;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .hero-image {
+            background: linear-gradient(135deg, #DBEAFE, #BFDBFE);
+            border-radius: 16px;
+            height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-image::before {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%233B82F6' fill-opacity='0.1' fill-rule='evenodd'%3E%3Cpath d='M20 20c0-11.046-8.954-20-20-20s20 8.954 20 20 8.954 20 20 20-20-8.954-20-20z'/%3E%3C/g%3E%3C/svg%3E");
+            animation: float 20s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .hero-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #3B82F6;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .ai-visualization {
+            font-size: 48px;
+            color: #3B82F6;
+            z-index: 1;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 300ms;
+        }
+
+        .modal-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal {
+            background: white;
+            padding: 32px;
+            border-radius: 16px;
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            transform: scale(0.8);
+            transition: transform 300ms;
+        }
+
+        .modal-overlay.show .modal {
+            transform: scale(1);
+        }
+
+        .success-icon {
+            width: 64px;
+            height: 64px;
+            background: #10B981;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+            color: white;
+            font-size: 24px;
+        }
+
+        .error-icon {
+            background: #EF4444;
+        }
+
+        .modal h3 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .modal p {
+            color: #64748B;
+            margin-bottom: 24px;
+        }
+
+        .modal-btn {
+            background: linear-gradient(135deg, #3B82F6, #1D4ED8);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 200ms;
+        }
+
+        .modal-btn:hover {
+            background: linear-gradient(135deg, #2563EB, #1D4ED8);
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        @keyframes checkmark {
+            0% { transform: scale(0); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        .success-icon {
+            animation: checkmark 0.5s ease-out;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 16px;
+            }
+            .hero-content {
+                grid-template-columns: 1fr;
+                gap: 32px;
+                text-align: center;
+            }
+            .hero-text h1 {
+                font-size: 36px;
+            }
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+            .form-container {
+                padding: 24px;
+            }
+            .hero {
+                padding: 48px 0;
+            }
+            nav {
+                display: none;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-text h1 {
+                font-size: 28px;
+            }
+            .hero-text p {
+                font-size: 16px;
+            }
+            .form-container {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <div class="logo-icon">D</div>
+                    DigitalFlo
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#demo">Demo</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h1>Time to Experience your <span class="highlight">New AI Agent</span></h1>
+                    <p>Unlock the power of artificial intelligence to transform your workflow and boost productivity.</p>
+                    
+                    <div class="features-grid">
+                        <div class="feature-card">
+                            <div class="feature-icon">⚙️</div>
+                            <h3>Intelligent Automation</h3>
+                            <p>Streamline workflows with AI-powered automation</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">📊</div>
+                            <h3>Real-time Analytics</h3>
+                            <p>Get instant insights from your data</p>
+                        </div>
+                    </div>
+
+                    <ul class="feature-list">
+                        <li>Seamless integration with existing systems</li>
+                        <li>Advanced machine learning capabilities</li>
+                        <li>24/7 automated monitoring and alerts</li>
+                    </ul>
+                </div>
+
+                <div class="form-container">
+                    <div class="form-header">
+                        <h2 class="form-title">
+                            <span class="sparkle-icon">✨</span>
+                            Test Your AI
+                        </h2>
+                        <p class="form-subtitle">Fill out the form below to get started with your new AI agent.</p>
+                        <div class="form-badge">AI-Powered Platform</div>
+                    </div>
+
+                    <form id="demoForm" novalidate>
+                        <div class="form-group">
+                            <label class="form-label" for="firstName">First Name *</label>
+                            <input type="text" id="firstName" name="firstName" class="form-input" placeholder="John" required>
+                            <div class="error-message">First name must be at least 2 characters</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="lastName">Last Name *</label>
+                            <input type="text" id="lastName" name="lastName" class="form-input" placeholder="Smith" required>
+                            <div class="error-message">Last name must be at least 2 characters</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="phoneNumber">Phone Number *</label>
+                            <input type="tel" id="phoneNumber" name="phoneNumber" class="form-input" placeholder="+1 (555) 123-4567" required>
+                            <div class="error-message">Please enter a valid phone number</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="emailAddress">Email Address *</label>
+                            <input type="email" id="emailAddress" name="emailAddress" class="form-input" placeholder="john@example.com" required>
+                            <div class="error-message">Please enter a valid email address</div>
+                        </div>
+
+                        <button type="submit" class="submit-btn" id="submitBtn">
+                            <span class="btn-text">✨ Start AI Test</span>
+                            <div class="loading-spinner"></div>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="hero-image">
+        <div class="ai-visualization">🤖</div>
+        <div class="hero-badge">AI-Powered Experience</div>
+    </div>
+
+    <div class="modal-overlay" id="successModal">
+        <div class="modal">
+            <div class="success-icon">✓</div>
+            <h3>Demo Initiated Successfully!</h3>
+            <p>Your AI agent is ready to go. Check your email for next steps...</p>
+            <button class="modal-btn" onclick="closeModal()">Continue</button>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="errorModal">
+        <div class="modal">
+            <div class="success-icon error-icon">✕</div>
+            <h3>Submission Error</h3>
+            <p id="errorMessage">Something went wrong. Please try again.</p>
+            <button class="modal-btn" onclick="closeErrorModal()">Try Again</button>
+        </div>
+    </div>
+
+    <script>
+        // ⚠️ CONFIGURATION: Paste your GHL webhook URL here
+        const GHL_WEBHOOK_URL = 'https://services.leadconnectorhq.com/hooks/hKGo4WPqDSYWfdvAMDQg/webhook-trigger/e0f1cfa8-bf6c-4748-80a2-72286185ebb5';
+
+        class FormValidator {
+            constructor() {
+                this.form = document.getElementById('demoForm');
+                this.submitBtn = document.getElementById('submitBtn');
+                this.successModal = document.getElementById('successModal');
+                this.errorModal = document.getElementById('errorModal');
+                this.isSubmitting = false;
+                
+                this.initializeEventListeners();
+                this.updateSubmitButton();
+            }
+
+            initializeEventListeners() {
+                this.form.addEventListener('submit', (e) => this.handleSubmit(e));
+                
+                const inputs = this.form.querySelectorAll('.form-input');
+                inputs.forEach(input => {
+                    input.addEventListener('blur', () => this.validateField(input));
+                    input.addEventListener('input', () => {
+                        this.clearError(input);
+                        this.updateSubmitButton();
+                        
+                        if (input.id === 'phoneNumber') {
+                            this.formatPhoneNumber(input);
+                        }
+                    });
+                });
+            }
+
+            validateField(input) {
+                const value = input.value.trim();
+                let isValid = true;
+
+                switch (input.id) {
+                    case 'firstName':
+                    case 'lastName':
+                        isValid = value.length >= 2 && /^[a-zA-Z\s\-']+$/.test(value);
+                        break;
+                    case 'phoneNumber':
+                        isValid = /^\+?[\d\s\-\(\)]{10,}$/.test(value.replace(/\D/g, '')) && value.replace(/\D/g, '').length >= 10;
+                        break;
+                    case 'emailAddress':
+                        isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+                        break;
+                }
+
+                if (!isValid) {
+                    this.showError(input);
+                } else {
+                    this.clearError(input);
+                }
+
+                return isValid;
+            }
+
+            showError(input) {
+                input.classList.add('error');
+                this.addShakeAnimation(input);
+            }
+
+            clearError(input) {
+                input.classList.remove('error');
+            }
+
+            addShakeAnimation(element) {
+                element.style.animation = 'shake 0.3s ease-in-out';
+                setTimeout(() => {
+                    element.style.animation = '';
+                }, 300);
+            }
+
+            formatPhoneNumber(input) {
+                let value = input.value.replace(/\D/g, '');
+                if (value.length >= 6) {
+                    value = value.replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3');
+                } else if (value.length >= 3) {
+                    value = value.replace(/(\d{3})(\d+)/, '($1) $2');
+                }
+                input.value = value;
+            }
+
+            validateForm() {
+                const inputs = this.form.querySelectorAll('.form-input[required]');
+                let isFormValid = true;
+
+                inputs.forEach(input => {
+                    if (!this.validateField(input)) {
+                        isFormValid = false;
+                    }
+                });
+
+                return isFormValid;
+            }
+
+            updateSubmitButton() {
+                const inputs = this.form.querySelectorAll('.form-input[required]');
+                let allFieldsFilled = true;
+
+                inputs.forEach(input => {
+                    if (!input.value.trim()) {
+                        allFieldsFilled = false;
+                    }
+                });
+
+                this.submitBtn.disabled = !allFieldsFilled || this.isSubmitting;
+            }
+
+            async handleSubmit(e) {
+                e.preventDefault();
+
+                if (this.isSubmitting || !this.validateForm()) {
+                    return;
+                }
+
+                this.isSubmitting = true;
+                this.showLoadingState();
+
+                try {
+                    await this.sendToWebhook();
+                    this.showSuccess();
+                } catch (error) {
+                    this.showErrorModal(error.message);
+                } finally {
+                    this.isSubmitting = false;
+                    this.hideLoadingState();
+                }
+            }
+
+            async sendToWebhook() {
+                const formData = new FormData(this.form);
+                
+                const payload = {
+                    firstName: formData.get('firstName').trim(),
+                    lastName: formData.get('lastName').trim(),
+                    phone: formData.get('phoneNumber').trim(),
+                    email: formData.get('emailAddress').trim(),
+                    fullName: `${formData.get('firstName').trim()} ${formData.get('lastName').trim()}`,
+                    timestamp: new Date().toISOString(),
+                    source: 'AI_Agent_Demo_Form',
+                    formType: 'demo_request',
+                    pageUrl: window.location.href,
+                    userAgent: navigator.userAgent,
+                    referrer: document.referrer || 'direct'
+                };
+
+                console.log('Sending to webhook:', payload);
+
+                const response = await fetch(GHL_WEBHOOK_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Webhook error: ${response.status}`);
+                }
+
+                const result = await response.json().catch(() => ({}));
+                console.log('Webhook response:', result);
+                
+                return result;
+            }
+
+            showLoadingState() {
+                const btnText = this.submitBtn.querySelector('.btn-text');
+                const spinner = this.submitBtn.querySelector('.loading-spinner');
+                
+                btnText.style.opacity = '0';
+                spinner.style.display = 'block';
+                this.submitBtn.disabled = true;
+                this.submitBtn.style.pointerEvents = 'none';
+            }
+
+            hideLoadingState() {
+                const btnText = this.submitBtn.querySelector('.btn-text');
+                const spinner = this.submitBtn.querySelector('.loading-spinner');
+                
+                btnText.style.opacity = '1';
+                spinner.style.display = 'none';
+                this.submitBtn.style.pointerEvents = 'auto';
+                this.updateSubmitButton();
+            }
+
+            showSuccess() {
+                this.successModal.classList.add('show');
+                this.form.reset();
+                this.updateSubmitButton();
+            }
+
+            showErrorModal(message) {
+                document.getElementById('errorMessage').textContent = message || 'Something went wrong. Please try again.';
+                this.errorModal.classList.add('show');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            new FormValidator();
+        });
+
+        function closeModal() {
+            document.getElementById('successModal').classList.remove('show');
+        }
+
+        function closeErrorModal() {
+            document.getElementById('errorModal').classList.remove('show');
+        }
+    </script>
+</body>
+</html>
